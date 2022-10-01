@@ -7,36 +7,26 @@ import java.awt.event.ActionListener;
 public class Cronometro implements ActionListener {
     private Usuario player;
     private JLabel cronometro;
-    private long hora;
-    private long minutos;
-    private long segundos;
-    private long centisegundos;
+    private Processos processos;
     private long tempoDecorrido;
     private long tempoInicial;
 
     public Cronometro(Usuario player ,JLabel cronometro){
         this.player = player;
         this.cronometro = cronometro;
+        this.processos = new Processos(this.player.getNivel());
     }
 
     public void actionPerformed(ActionEvent e) {
-        this.cronometro.setText(calcularTempo());
+        this.tempoDecorrido = System.currentTimeMillis() - this.tempoInicial;
+        this.cronometro.setText(processos.calcularTempo(this.tempoDecorrido));
     }
 
     Timer timer = new Timer(10, this);
 
-    public String calcularTempo(){
-        this.tempoDecorrido = System.currentTimeMillis() - this.tempoInicial;
-        this.hora = (this.tempoDecorrido/3600000) % 24;
-        this.minutos = (this.tempoDecorrido/60000) % 60;
-        this.segundos = (this.tempoDecorrido/1000) % 60;
-        this.centisegundos = (this.tempoDecorrido/10) % 100;
-        return (String.format("%02d:%02d:%02d:%02d", this.hora, this.minutos, this.segundos, this.centisegundos));
-    }
-
     public void pararCronometro(){
         timer.stop();
-        player.setTempo(String.format("%02d:%02d:%02d:%02d", this.hora, this.minutos, this.segundos, this.centisegundos));
+        player.setTempo(this.tempoDecorrido);
     }
 
     public void comecarCronometro(){

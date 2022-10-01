@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 
-import puzzleN.model.NomeDeUsuarioException;
+import puzzleN.exceptions.NomeDeUsuarioException;
 import puzzleN.model.Usuario;
 import puzzleN.view.jogo.*;
 

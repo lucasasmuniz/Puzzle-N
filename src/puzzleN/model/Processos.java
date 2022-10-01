@@ -131,4 +131,12 @@ public class Processos { //Essa classe depois herdará de usuarios
         }
         return true;
     }
+    public String calcularTempo(long tempoDecorrido){
+        long hora = (tempoDecorrido/3600000) % 24;
+        long minutos = (tempoDecorrido/60000) % 60;
+        long segundos = (tempoDecorrido/1000) % 60;
+        long centisegundos = (tempoDecorrido/10) % 100;
+        return (String.format("%02d:%02d:%02d:%02d", hora, minutos, segundos, centisegundos));
+    }
+
 }

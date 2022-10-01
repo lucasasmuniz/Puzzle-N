@@ -73,8 +73,8 @@ public class Ganhou extends JPanel implements ActionListener {
         dificuldade.setFont(fonteTmenor);
         dificuldade.setForeground(new Color(255, 255, 255));
         dificuldade.setAlignmentX(CENTER_ALIGNMENT);
-
-        JLabel tempo = new JLabel(player.getTempo());
+        Processos processos = new Processos(this.player.getNivel());
+        JLabel tempo = new JLabel(processos.calcularTempo(this.player.getTempo()));
         tempo.setFont(fonteTmenor);
         tempo.setForeground(new Color(255, 255, 255));
         tempo.setAlignmentX(CENTER_ALIGNMENT);

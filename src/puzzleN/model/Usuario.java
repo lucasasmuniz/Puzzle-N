@@ -1,5 +1,7 @@
 package puzzleN.model;
 
+import puzzleN.exceptions.NomeDeUsuarioException;
+
 import java.util.*;
 
 
@@ -8,16 +10,21 @@ public class Usuario {
     private int movimento;
     private int nivel;
     private int tipoJogo;
-    private String tempo;
+    private long tempo;
     private Boolean ajudaAtiva;
     private Boolean puzzleNMaluco;
     private double randomMaluco;
+    public Usuario(String nome, long tempo, int movimento){
+        this.nome = nome;
+        this.tempo = tempo;
+        this.movimento = movimento;
+    }
 
-    public void setNome(String nome) throws NomeDeUsuarioException{
+    public void setNome(String nome) throws NomeDeUsuarioException {
         if(nome==null) {
-
-        }else if(nome.replaceAll("\\s", "").length()<=12 && nome.replaceAll("\\s", "").length()>=3) {
-            this.nome = nome.replaceAll("\\s", "");
+            this.nome = null;
+        }else if(nome.trim().length()<=12 && nome.trim().length()>=3) {
+            this.nome = nome.trim();//replaceAll("\\s", "");
         }else {
             throw new NomeDeUsuarioException();
         }
@@ -66,11 +73,11 @@ public class Usuario {
         return this.puzzleNMaluco;
     }
 
-    public void setTempo(String tempo){
+    public void setTempo(long tempo){
         this.tempo = tempo;
     }
 
-    public String getTempo(){
+    public long getTempo(){
         return this.tempo;
     }
 

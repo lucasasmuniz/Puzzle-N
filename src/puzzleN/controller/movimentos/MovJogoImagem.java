@@ -2,6 +2,7 @@ package puzzleN.controller.movimentos;
 
 import puzzleN.model.Cronometro;
 import puzzleN.model.Processos;
+import puzzleN.model.Ranking;
 import puzzleN.model.Usuario;
 import puzzleN.view.Ganhou;
 
@@ -31,6 +32,7 @@ public class MovJogoImagem extends MovJogo{
     }
     public void actionPerformed(ActionEvent e) {
         Processos processo = new Processos(super.getPlayer().getNivel());
+        Ranking ranking = new Ranking();
         for (int i = 0; i < super.getBotao().length; i++) { //nesses for daqui ele vai olhar cada botao pra saber qual foi apertado
             for (int j = 0; j < super.getBotao()[i].length; j++) {
                 if (e.getSource() == super.getBotao()[i][j]) {
@@ -50,6 +52,7 @@ public class MovJogoImagem extends MovJogo{
                         this.movimentos.setText("Movimentos: " + super.getPlayer().getMovimento()+ " |");
                         if (processo.foiResolvido(super.getBotao())) {
                             this.cronometro.pararCronometro();
+                            ranking.salvarRanking(super.getPlayer());
                             mainFrame.setSize(500, 430);
                             mainFrame.setLocationRelativeTo(null);
                             Ganhou telaGanhou = new Ganhou(this.mainFrame, this.painelMenu, super.getPlayer());
