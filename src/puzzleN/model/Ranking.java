@@ -14,6 +14,10 @@ import java.util.Comparator;
 public class Ranking implements Comparator<Usuario> {
 
     public void salvarRanking(Usuario player) {
+        File diretorio = new File("./src/ranking");
+        if (!diretorio.isDirectory()){
+            diretorio.mkdirs();
+        }
         BufferedWriter writer = null;
         try {
             if (player.getNivel() == 2){

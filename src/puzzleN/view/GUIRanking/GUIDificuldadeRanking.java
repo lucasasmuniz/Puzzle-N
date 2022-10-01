@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class GUIDificuldadeRanking extends JPanel implements ActionListener {
 
@@ -33,20 +34,32 @@ public class GUIDificuldadeRanking extends JPanel implements ActionListener {
     }
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==facil){
-            rankingDificuldade = 2;
-            GUIRanking guiRanking = new GUIRanking(this.mainFrame, this.painelMenu, rankingDificuldade);
-            mainFrame.setContentPane(guiRanking);
-            guiRanking.revalidate();
+            if (new File("./src/ranking/RankingFacil.txt").isFile()){
+                rankingDificuldade = 2;
+                GUIRanking guiRanking = new GUIRanking(this.mainFrame, this.painelMenu, rankingDificuldade);
+                mainFrame.setContentPane(guiRanking);
+                guiRanking.revalidate();
+            }else {
+                JOptionPane.showMessageDialog(null,"Ainda não há registro de ranking nesta dificuldade.", "Ranking inexistente", JOptionPane.WARNING_MESSAGE);
+            }
         } else if (e.getSource()==medio) {
-            rankingDificuldade = 3;
-            GUIRanking guiRanking = new GUIRanking(this.mainFrame, this.painelMenu, rankingDificuldade);
-            mainFrame.setContentPane(guiRanking);
-            guiRanking.revalidate();
+            if (new File("./src/ranking/RankingMedio.txt").isFile()){
+                rankingDificuldade = 3;
+                GUIRanking guiRanking = new GUIRanking(this.mainFrame, this.painelMenu, rankingDificuldade);
+                mainFrame.setContentPane(guiRanking);
+                guiRanking.revalidate();
+            }else {
+                JOptionPane.showMessageDialog(null,"Ainda não há registro de ranking nesta dificuldade.", "Ranking inexistente", JOptionPane.WARNING_MESSAGE);
+            }
         } else if (e.getSource()==dificil) {
-            rankingDificuldade = 4;
-            GUIRanking guiRanking = new GUIRanking(this.mainFrame, this.painelMenu, rankingDificuldade);
-            mainFrame.setContentPane(guiRanking);
-            guiRanking.revalidate();
+            if (new File("./src/ranking/RankingDificil.txt").isFile()){
+                rankingDificuldade = 4;
+                GUIRanking guiRanking = new GUIRanking(this.mainFrame, this.painelMenu, rankingDificuldade);
+                mainFrame.setContentPane(guiRanking);
+                guiRanking.revalidate();
+            }else {
+                JOptionPane.showMessageDialog(null,"Ainda não há registro de ranking nesta dificuldade.", "Ranking inexistente", JOptionPane.WARNING_MESSAGE);
+            }
         } else if (e.getSource()==voltar){
             this.mainFrame.setContentPane(this.painelMenu);
             this.painelMenu.revalidate();
