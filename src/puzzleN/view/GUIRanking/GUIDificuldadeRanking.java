@@ -34,7 +34,7 @@ public class GUIDificuldadeRanking extends JPanel implements ActionListener {
     }
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==facil){
-            if (new File("./src/ranking/RankingFacil.txt").isFile()){
+            if (new File("./src/resources/ranking/RankingFacil.txt").isFile()){
                 rankingDificuldade = 2;
                 GUIRanking guiRanking = new GUIRanking(this.mainFrame, this.painelMenu, rankingDificuldade);
                 mainFrame.setContentPane(guiRanking);
@@ -43,7 +43,7 @@ public class GUIDificuldadeRanking extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(null,"Ainda não há registro de ranking nesta dificuldade.", "Ranking inexistente", JOptionPane.WARNING_MESSAGE);
             }
         } else if (e.getSource()==medio) {
-            if (new File("./src/ranking/RankingMedio.txt").isFile()){
+            if (new File("./src/resources/ranking/RankingMedio.txt").isFile()){
                 rankingDificuldade = 3;
                 GUIRanking guiRanking = new GUIRanking(this.mainFrame, this.painelMenu, rankingDificuldade);
                 mainFrame.setContentPane(guiRanking);
@@ -52,7 +52,7 @@ public class GUIDificuldadeRanking extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(null,"Ainda não há registro de ranking nesta dificuldade.", "Ranking inexistente", JOptionPane.WARNING_MESSAGE);
             }
         } else if (e.getSource()==dificil) {
-            if (new File("./src/ranking/RankingDificil.txt").isFile()){
+            if (new File("./src/resources/ranking/RankingDificil.txt").isFile()){
                 rankingDificuldade = 4;
                 GUIRanking guiRanking = new GUIRanking(this.mainFrame, this.painelMenu, rankingDificuldade);
                 mainFrame.setContentPane(guiRanking);

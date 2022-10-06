@@ -1,11 +1,11 @@
 package puzzleN.view;
 import javax.swing.*;
+
 import puzzleN.model.*;
 import puzzleN.view.GUIRanking.GUIDificuldadeRanking;
 
 import java.awt.event.*;
 import java.awt.*;
-import java.io.File;
 
 public class Menu extends JFrame implements ActionListener{
     Color fundo = new Color(253,184,39);
@@ -32,19 +32,16 @@ public class Menu extends JFrame implements ActionListener{
                 dificuldade.revalidate();
             }
         } else if(e.getSource()==ranking) {
-            if (new File("./src/ranking/RankingFacil.txt").isFile() || new File("./src/ranking/RankingMedio.txt").isFile() || new File("./src/ranking/RankingDificl.txt").isFile()){
-                GUIDificuldadeRanking guiDificuldadeRanking = new GUIDificuldadeRanking(this, this.menu, this.player);
-                setContentPane(guiDificuldadeRanking);
-                guiDificuldadeRanking.revalidate();
-            }else {
-                JOptionPane.showMessageDialog(null,"Ainda não há registro de jogo para existir um ranking.", "Ranking inexistente", JOptionPane.WARNING_MESSAGE);
-            }
+            GUIDificuldadeRanking guiDificuldadeRanking = new GUIDificuldadeRanking(this, this.menu, this.player);
+            setContentPane(guiDificuldadeRanking);
+            guiDificuldadeRanking.revalidate();
         } else if(e.getSource()==sair) {
             System.exit(0);
         }
     }
 
     public Menu(){
+        this.player = new Usuario(null, 0 ,0);
         setTitle("Puzzle-N");
         setSize(500,430);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -53,8 +50,7 @@ public class Menu extends JFrame implements ActionListener{
         setResizable(false);
         setVisible(true);
         painelMenu();
-        //System.out.println(new File("./src/ranking/RankingMedio.txt").isFile());// USAR ISSO DAQUI PARA FAZER O SAVE
-        this.player = new Usuario(null, 0, 0);
+        ChecarSave checarSave = new ChecarSave(this.player, this, this.menu);
     }
 
     public void painelMenu() {

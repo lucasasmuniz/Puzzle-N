@@ -1,10 +1,7 @@
 package puzzleN.model;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -14,40 +11,34 @@ import java.util.Comparator;
 public class Ranking implements Comparator<Usuario> {
 
     public void salvarRanking(Usuario player) {
-        File diretorio = new File("./src/ranking");
+        File diretorio = new File("./src/resources/ranking");
         if (!diretorio.isDirectory()){
             diretorio.mkdirs();
         }
         BufferedWriter writer = null;
         try {
             if (player.getNivel() == 2){
-                writer = new BufferedWriter(new FileWriter("./src/ranking/RankingFacil.txt", true));
+                writer = new BufferedWriter(new FileWriter("./src/resources/ranking/RankingFacil.txt", true));
             } else if (player.getNivel() == 3) {
-                writer = new BufferedWriter(new FileWriter("./src/ranking/RankingMedio.txt", true));
+                writer = new BufferedWriter(new FileWriter("./src/resources/ranking/RankingMedio.txt", true));
             } else {
-                writer = new BufferedWriter(new FileWriter("./src/ranking/RankingDificil.txt", true));
+                writer = new BufferedWriter(new FileWriter("./src/resources/ranking/RankingDificil.txt", true));
             }
             writer.write(player.getNome()+ "," +player.getTempo()+ "," +player.getMovimento());
             writer.newLine();
+            writer.close();
         } catch (IOException e) {
-        } finally {
-            try {
-                if (writer != null)
-                    writer.close();
-            } catch (IOException e) {
-
-            }
         }
     }
     public void organizarRanking(int dificuldadeRanking){
         BufferedReader reader = null;
         try{
             if (dificuldadeRanking == 2){
-                reader = new BufferedReader(new FileReader("./src/ranking/RankingFacil.txt"));
+                reader = new BufferedReader(new FileReader("./src/resources/ranking/RankingFacil.txt"));
             } else if (dificuldadeRanking == 3) {
-                reader = new BufferedReader(new FileReader("./src/ranking/RankingMedio.txt"));
+                reader = new BufferedReader(new FileReader("./src/resources/ranking/RankingMedio.txt"));
             } else {
-                reader = new BufferedReader(new FileReader("./src/ranking/RankingDificil.txt"));
+                reader = new BufferedReader(new FileReader("./src/resources/ranking/RankingDificil.txt"));
             }
             ArrayList<Usuario> gravacaoUsuario = new ArrayList<Usuario>();
             String currentLine = reader.readLine();
@@ -62,11 +53,11 @@ public class Ranking implements Comparator<Usuario> {
             Collections.sort(gravacaoUsuario, this);
             BufferedWriter writer = null;
             if (dificuldadeRanking == 2){
-                writer = new BufferedWriter(new FileWriter("./src/ranking/RankingFacil.txt", false));
+                writer = new BufferedWriter(new FileWriter("./src/resources/ranking/RankingFacil.txt", false));
             } else if (dificuldadeRanking == 3) {
-                writer = new BufferedWriter(new FileWriter("./src/ranking/RankingMedio.txt", false));
+                writer = new BufferedWriter(new FileWriter("./src/resources/ranking/RankingMedio.txt", false));
             } else {
-                writer = new BufferedWriter(new FileWriter("./src/ranking/RankingDificil.txt", false));
+                writer = new BufferedWriter(new FileWriter("./src/resources/ranking/RankingDificil.txt", false));
             }
             int i = 1;
             for (Usuario usuario : gravacaoUsuario){
@@ -94,11 +85,11 @@ public class Ranking implements Comparator<Usuario> {
         BufferedReader reader = null;
         try {
             if (dificuldadeRanking == 2){
-                reader = new BufferedReader(new FileReader("./src/ranking/RankingFacil.txt"));
+                reader = new BufferedReader(new FileReader("./src/resources/ranking/RankingFacil.txt"));
             } else if (dificuldadeRanking == 3) {
-                reader = new BufferedReader(new FileReader("./src/ranking/RankingMedio.txt"));
+                reader = new BufferedReader(new FileReader("./src/resources/ranking/RankingMedio.txt"));
             } else {
-                reader = new BufferedReader(new FileReader("./src/ranking/RankingDificil.txt"));
+                reader = new BufferedReader(new FileReader("./src/resources/ranking/RankingDificil.txt"));
             }
 
             String currentLine = reader.readLine();
@@ -112,6 +103,7 @@ public class Ranking implements Comparator<Usuario> {
 
             };
 
+            tableModel.addColumn("Rank");
             tableModel.addColumn("Usuário");
             tableModel.addColumn("Tempo");
             tableModel.addColumn("Movimentos");
@@ -122,7 +114,7 @@ public class Ranking implements Comparator<Usuario> {
                 String nome = usuarioDetalhe[0];
                 long tempo = Integer.valueOf(usuarioDetalhe[1]);
                 int movimento = Integer.valueOf(usuarioDetalhe[2]);
-                Object[] linha = {nome,processos.calcularTempo(tempo),movimento};
+                Object[] linha = {i+1,nome,processos.calcularTempo(tempo),movimento};
                 tableModel.insertRow(i, linha);
                 currentLine = reader.readLine();
                 i++;
@@ -137,7 +129,7 @@ public class Ranking implements Comparator<Usuario> {
             table.setForeground(Color.WHITE);
 
             JTableHeader tableHeader = table.getTableHeader();
-            tableHeader.setBackground(new Color(37, 37, 37));
+            tableHeader.setBackground(new Color(47, 47, 47));
             tableHeader.setFont(new Font("", Font.BOLD, 12));
             tableHeader.setForeground(Color.WHITE);
             tableHeader.setReorderingAllowed(false);
@@ -148,7 +140,14 @@ public class Ranking implements Comparator<Usuario> {
                 tableColumn.setResizable(false);
             }
 
+            TableColumn tableColumn = columnModel.getColumn(0);
+            tableColumn.setPreferredWidth(40);
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+            tableColumn.setCellRenderer(centerRenderer);
+
             painelMeio.add(new JScrollPane(table));
+            reader.close();
 
         } catch (FileNotFoundException e) {
         } catch (IOException e) {

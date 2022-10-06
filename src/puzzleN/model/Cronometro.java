@@ -30,7 +30,7 @@ public class Cronometro implements ActionListener {
     }
 
     public void comecarCronometro(){
-        this.tempoInicial = System.currentTimeMillis();
+        this.tempoInicial = System.currentTimeMillis() - this.player.getTempo();
         timer.start();
     }
 

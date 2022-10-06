@@ -1,7 +1,5 @@
 package puzzleN.model;
 
-import puzzleN.exceptions.NomeDeUsuarioException;
-
 import java.util.*;
 
 
@@ -14,6 +12,7 @@ public class Usuario {
     private Boolean ajudaAtiva;
     private Boolean puzzleNMaluco;
     private double randomMaluco;
+    private String[] arraySalvo;
     public Usuario(String nome, long tempo, int movimento){
         this.nome = nome;
         this.tempo = tempo;
@@ -81,13 +80,36 @@ public class Usuario {
         return this.tempo;
     }
 
-    public void setRandomMaluco(){
-        Random random = new Random();
-        this.randomMaluco = (double) (random.nextInt(12) + 1)/100;
+    public void setRandomMaluco(double randomMaluco){
+        if (randomMaluco == 0){
+            Random random = new Random();
+            this.randomMaluco = (double) (random.nextInt(12) + 1)/100;
+        } else {
+            this.randomMaluco = randomMaluco;
+        }
     }
 
     public double getRandomMaluco(){
         return this.randomMaluco;
     }
 
+    public void setArraySalvo(String[] arraySalvo) {
+        this.arraySalvo = arraySalvo;
+    }
+
+    public String[] getArraySalvo() {
+        return arraySalvo;
+    }
+
+    public void playerReset(){
+        this.nome = null;
+        this.movimento = 0;
+        this.nivel = 0;
+        this.tipoJogo = 0;
+        this.tempo = 0;
+        this.ajudaAtiva = null;
+        this.puzzleNMaluco = null;
+        this.randomMaluco = 0;
+        this.arraySalvo = null;
+    }
 }

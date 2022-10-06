@@ -2,6 +2,7 @@ package puzzleN.view.jogo;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
+import java.io.File;
 
 import puzzleN.model.*;
 import puzzleN.controller.botoes.*;
@@ -10,7 +11,6 @@ import puzzleN.controller.movimentos.*;
 public class GUIJogoImagem extends GUIJogo{
     private int[] numerosRandom;//POSICAO DOS BOTOES
     private int[][] resposta;
-    private JButton[][] botoes;
     Color fundo = new Color(253,184,39);
     JButton ajuda = new JButton("Ajuda");
     Font botaoImagem = new Font("", Font.BOLD,0);
@@ -22,7 +22,13 @@ public class GUIJogoImagem extends GUIJogo{
         this.resposta = new int[super.getPlayer().getNivel()][super.getPlayer().getNivel()];
 
         Processos processosPlayer = new Processos(super.getPlayer().getNivel());
-        this.numerosRandom = processosPlayer.randomResolvivel();
+        if (new File("./src/resources/save/SaveGame.txt").isFile()){
+            for (int i = 0; i<super.getPlayer().getNivel()*super.getPlayer().getNivel() ;i++){
+                this.numerosRandom[i] = Integer.valueOf(super.getPlayer().getArraySalvo()[i]);
+            }
+        }else {
+            this.numerosRandom = processosPlayer.randomResolvivel();
+        }
         this.resposta = processosPlayer.gabarito();
     }
     public void parteCima(Usuario player) {
@@ -31,7 +37,7 @@ public class GUIJogoImagem extends GUIJogo{
 
     public void parteBaixo() {
         super.parteBaixo();
-        BotaoAjuda botaoAjuda = new BotaoAjuda(this.botoes,this.ajuda, super.getPlayer());
+        BotaoAjuda botaoAjuda = new BotaoAjuda(super.getBotoes(),this.ajuda, super.getPlayer());
         ajuda.addActionListener(botaoAjuda);
         super.getPainelSul().add(ajuda);
         add(super.getPainelSul(),BorderLayout.SOUTH);
@@ -40,40 +46,39 @@ public class GUIJogoImagem extends GUIJogo{
         JPanel meio = new JPanel(new GridLayout(super.getPlayer().getNivel(),super.getPlayer().getNivel()));
         meio.setBackground(fundo);
         meio.setBorder(new EmptyBorder(0,100,0,100));
-        this.botoes = new JButton[super.getPlayer().getNivel()][super.getPlayer().getNivel()];
         int k = 0;
-        MovJogo controles = new MovJogoImagem(this.botoes, this.resposta, super.getPlayer(), super.getTentativas(), super.getCronometro(), super.getMainFrame(), super.getPainelMenu());
-        for(int i = 0; i<botoes.length; i++) {
-            for(int j = 0; j<botoes[i].length ;j++) {
+        MovJogo controles = new MovJogoImagem(super.getBotoes(), this.resposta, super.getPlayer(), super.getTentativas(), super.getCronometro(), super.getMainFrame(), super.getPainelMenu(), super.getSaveGame());
+        for(int i = 0; i<super.getBotoes().length; i++) {
+            for(int j = 0; j<super.getBotoes()[i].length ;j++) {
                 if(String.valueOf(numerosRandom[k]).equals("0")) {
-                    botoes[i][j] = new JButton();
-                    botoes[i][j].setBackground(fundo);
-                    botoes[i][j].addActionListener(controles);
-                    botoes[i][j].setFont(botaoImagem);
-                    botoes[i][j].setForeground(Color.white);
-                    botoes[i][j].setHorizontalTextPosition(SwingConstants.CENTER);
-                    botoes[i][j].setText(String.valueOf(numerosRandom[k]));
-                    meio.add(botoes[i][j]);
+                    super.getBotoes()[i][j] = new JButton();
+                    super.getBotoes()[i][j].setBackground(fundo);
+                    super.getBotoes()[i][j].addActionListener(controles);
+                    super.getBotoes()[i][j].setFont(botaoImagem);
+                    super.getBotoes()[i][j].setForeground(Color.white);
+                    super.getBotoes()[i][j].setHorizontalTextPosition(SwingConstants.CENTER);
+                    super.getBotoes()[i][j].setText(String.valueOf(numerosRandom[k]));
+                    meio.add(super.getBotoes()[i][j]);
                 } else {
-                    botoes[i][j] = new JButton();
-                    botoes[i][j].addActionListener(controles);
-                    botoes[i][j].setText(String.valueOf(numerosRandom[k]));
+                    super.getBotoes()[i][j] = new JButton();
+                    super.getBotoes()[i][j].addActionListener(controles);
+                    super.getBotoes()[i][j].setText(String.valueOf(numerosRandom[k]));
                     if (super.getPlayer().getNivel() == 2){
-                        botoes[i][j].setIcon(new ImageIcon(getClass().getResource("/imagemFacil/"+(botoes[i][j].getText())+".png")));
+                        super.getBotoes()[i][j].setIcon(new ImageIcon(getClass().getResource("/imagemFacil/"+(super.getBotoes()[i][j].getText())+".png")));
                     }else if(super.getPlayer().getNivel() == 3){
-                        botoes[i][j].setIcon(new ImageIcon(getClass().getResource("/imagemMedio/"+(botoes[i][j].getText())+".png")));
+                        super.getBotoes()[i][j].setIcon(new ImageIcon(getClass().getResource("/imagemMedio/"+(super.getBotoes()[i][j].getText())+".png")));
                     }else {
-                        botoes[i][j].setIcon(new ImageIcon(getClass().getResource("/imagemDificil/"+(botoes[i][j].getText())+".png")));
+                        super.getBotoes()[i][j].setIcon(new ImageIcon(getClass().getResource("/imagemDificil/"+(super.getBotoes()[i][j].getText())+".png")));
                     }
-                    botoes[i][j].setFont(botaoImagem);
-                    botoes[i][j].setHorizontalTextPosition(SwingConstants.CENTER);
-                    botoes[i][j].setForeground(Color.white);
-                    if(String.valueOf(resposta[i][j]).equals(botoes[i][j].getText())) {
-                        botoes[i][j].setForeground(new Color(23, 197, 0));
+                    super.getBotoes()[i][j].setFont(botaoImagem);
+                    super.getBotoes()[i][j].setHorizontalTextPosition(SwingConstants.CENTER);
+                    super.getBotoes()[i][j].setForeground(Color.white);
+                    if(String.valueOf(resposta[i][j]).equals(super.getBotoes()[i][j].getText())) {
+                        super.getBotoes()[i][j].setForeground(new Color(23, 197, 0));
                     }
                 }
                 k++;
-                meio.add(botoes[i][j]);
+                meio.add(super.getBotoes()[i][j]);
             }
         }
         add(meio);

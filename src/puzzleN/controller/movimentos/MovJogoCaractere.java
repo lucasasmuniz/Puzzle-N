@@ -1,9 +1,6 @@
 package puzzleN.controller.movimentos;
 
-import puzzleN.model.Cronometro;
-import puzzleN.model.Processos;
-import puzzleN.model.Ranking;
-import puzzleN.model.Usuario;
+import puzzleN.model.*;
 import puzzleN.view.Ganhou;
 
 import javax.swing.*;
@@ -13,22 +10,14 @@ import java.awt.event.ActionListener;
 
 public class MovJogoCaractere extends MovJogo implements ActionListener {
     private char[][] gabarito;
-    private JLabel movimentos;
-    private Cronometro cronometro;
-    private JFrame mainFrame;
-    private JPanel painelMenu;
 
     Font fonteBotao = new Font("", Font.BOLD, 50);
     Font botaoBranco = new Font("", Font.BOLD,0);
     Color fundo = new Color(253,184,39);
 
-    public MovJogoCaractere(JButton[][] botao, char[][] gabarito, Usuario player, JLabel movimentos, Cronometro cronometro,JFrame mainFrame, JPanel painelMenu) {
-        super(player, botao);
+    public MovJogoCaractere(JButton[][] botao, char[][] gabarito, Usuario player, JLabel movimentos, Cronometro cronometro, JFrame mainFrame, JPanel painelMenu, SaveGame saveGame) {
+        super(player, botao, movimentos, cronometro, mainFrame, painelMenu, saveGame);
         this.gabarito = gabarito;
-        this.movimentos = movimentos;
-        this.cronometro = cronometro;
-        this.mainFrame = mainFrame;
-        this.painelMenu = painelMenu;
     }
     public void actionPerformed(ActionEvent e) {
         Processos processo = new Processos(super.getPlayer().getNivel());
@@ -46,14 +35,16 @@ public class MovJogoCaractere extends MovJogo implements ActionListener {
                         super.getBotao()[i][j].setFont(botaoBranco);
                         super.getBotao()[i][j].setText("0");
                         super.getPlayer().setMovimento(super.getPlayer().getMovimento() + 1);
-                        this.movimentos.setText("Movimentos: "+super.getPlayer().getMovimento()+ " |");
+                        super.getMovimentos().setText("Movimentos: "+super.getPlayer().getMovimento()+ " |");
                         if(processo.foiResolvidoChar(super.getBotao())) {
-                            this.cronometro.pararCronometro();
+                            super.getCronometro().pararCronometro();
                             ranking.salvarRanking(super.getPlayer());
-                            this.mainFrame.setSize(500,430);
-                            this.mainFrame.setLocationRelativeTo(null);
-                            Ganhou telaGanhou = new Ganhou(this.mainFrame, this.painelMenu, super.getPlayer() );
-                            this.mainFrame.setContentPane(telaGanhou);
+                            super.getMainFrame().setSize(500,430);
+                            super.getMainFrame().setLocationRelativeTo(null);
+                            super.getMainFrame().removeWindowListener(super.getSaveGame());
+                            super.getMainFrame().setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                            Ganhou telaGanhou = new Ganhou(super.getMainFrame(), super.getPainelMenu(), super.getPlayer() );
+                            super.getMainFrame().setContentPane(telaGanhou);
                             telaGanhou.revalidate();
                         }
                     }

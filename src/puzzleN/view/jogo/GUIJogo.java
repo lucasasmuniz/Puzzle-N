@@ -1,11 +1,11 @@
 package puzzleN.view.jogo;
 import puzzleN.model.*;
 import puzzleN.controller.botoes.BotaoRecomecar;
-import puzzleN.view.IGUIParteMeio;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.File;
 
 public abstract class GUIJogo extends JPanel implements IGUIParteMeio {
     private Usuario player;
@@ -17,6 +17,8 @@ public abstract class GUIJogo extends JPanel implements IGUIParteMeio {
     private JLabel puzzleMaluco;
     private JLabel tempo;
     private JPanel painelSul;
+    private JButton[][] botoes;
+    private SaveGame saveGame;
     JButton reset = new JButton("Recomeçar");
     Color fundo = new Color(253,184,39);
     Font fontePainel = new Font("", Font.BOLD, 15);
@@ -25,11 +27,11 @@ public abstract class GUIJogo extends JPanel implements IGUIParteMeio {
         this.player = player;
         this.mainFrame = mainFrame;
         this.painelMenu = painelMenu;
-        this.player.setMovimento(0);
-        if (this.player.getPuzzleNMaluco()){
-            this.player.setRandomMaluco();
+        if (this.player.getPuzzleNMaluco() && !new File("./src/resources/save/SaveGame.txt").isFile()){
+            this.player.setRandomMaluco(0);
         }
         this.tempo = new JLabel();
+        this.botoes = new JButton[this.player.getNivel()][this.player.getNivel()];
 
         setLayout(new BorderLayout());
         setVisible(true);
@@ -76,13 +78,17 @@ public abstract class GUIJogo extends JPanel implements IGUIParteMeio {
         add(norte,BorderLayout.NORTH);
         this.cronometro = new Cronometro(this.player, this.tempo);
         this.cronometro.comecarCronometro();
+
+        this.saveGame = new SaveGame(this.player, this.botoes, this.cronometro);
+        this.mainFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        this.mainFrame.addWindowListener(this.saveGame);
     }
 
     public void parteBaixo(){
         this.painelSul = new JPanel(new FlowLayout());
         this.painelSul.setPreferredSize(new Dimension(700,100));
         this.painelSul.setBackground(fundo);
-        BotaoRecomecar botaoRecomecar = new BotaoRecomecar(reset, mainFrame, this.painelMenu, player);
+        BotaoRecomecar botaoRecomecar = new BotaoRecomecar(this.reset, this.mainFrame, this.painelMenu, this.player, this.cronometro, this.saveGame);
         reset.addActionListener(botaoRecomecar);
         this.painelSul.add(reset);
         add(this.painelSul,BorderLayout.SOUTH);
@@ -105,5 +111,11 @@ public abstract class GUIJogo extends JPanel implements IGUIParteMeio {
     }
     public JPanel getPainelSul(){
         return this.painelSul;
+    }
+    public JButton[][] getBotoes() {
+        return botoes;
+    }
+    public SaveGame getSaveGame() {
+        return saveGame;
     }
 }

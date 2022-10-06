@@ -1,4 +1,4 @@
-package puzzleN.exceptions;
+package puzzleN.model;
 
 public class NomeDeUsuarioException extends Exception{
     public NomeDeUsuarioException(){

@@ -1,21 +1,34 @@
 package puzzleN.controller.movimentos;
 
+import puzzleN.model.Cronometro;
+import puzzleN.model.SaveGame;
 import puzzleN.model.Usuario;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Random;
 
 public abstract class MovJogo implements ActionListener{
     private Usuario player;
     private JButton[][] botao;
+    private JLabel movimentos;
+    private Cronometro cronometro;
+    private JFrame mainFrame;
+    private JPanel painelMenu;
+    private SaveGame saveGame;
     Font fonteBotao = new Font("", Font.BOLD, 50);
 
-    public MovJogo(Usuario player, JButton[][] botao) {
+    public MovJogo(Usuario player, JButton[][] botao, JLabel movimentos, Cronometro cronometro, JFrame mainFrame, JPanel painelMenu, SaveGame saveGame) {
         this.player = player;
         this.botao = botao;
+        this.movimentos = movimentos;
+        this.cronometro = cronometro;
+        this.mainFrame = mainFrame;
+        this.painelMenu = painelMenu;
+        this.saveGame = saveGame;
     }
     public void misturarBotoesMaluco(){
         if (this.player.getPuzzleNMaluco()){
@@ -63,12 +76,34 @@ public abstract class MovJogo implements ActionListener{
         }
         return 0;
     }
+
     public abstract void actionPerformed(ActionEvent e);
 
     public JButton[][] getBotao(){
         return this.botao;
     }
+
     public Usuario getPlayer(){
         return this.player;
+    }
+
+    public JLabel getMovimentos() {
+        return movimentos;
+    }
+
+    public Cronometro getCronometro() {
+        return cronometro;
+    }
+
+    public JFrame getMainFrame() {
+        return mainFrame;
+    }
+
+    public JPanel getPainelMenu() {
+        return painelMenu;
+    }
+
+    public SaveGame getSaveGame() {
+        return saveGame;
     }
 }

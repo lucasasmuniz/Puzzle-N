@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class Ganhou extends JPanel implements ActionListener {
     private Usuario player;
@@ -30,6 +31,9 @@ public class Ganhou extends JPanel implements ActionListener {
         painelBaixo();
         painelLadoOeste();
         painelLadoLeste();
+        if(new File("./src/resources/save/SaveGame.txt").isFile()){
+            new File("./src/resources/save/SaveGame.txt").delete();
+        }
     }
     public void painelCima() {
         JPanel cima = new JPanel();
@@ -130,6 +134,7 @@ public class Ganhou extends JPanel implements ActionListener {
     }
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == voltarMenu){
+            this.player.playerReset();
             mainFrame.setTitle("Puzzle-N");
             mainFrame.setContentPane(painelMenu);
             painelMenu.revalidate();
