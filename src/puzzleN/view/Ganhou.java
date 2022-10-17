@@ -13,24 +13,33 @@ public class Ganhou extends JPanel implements ActionListener {
     private JFrame mainFrame;
     private JPanel painelMenu;
     private JLabel puzzleMaluco;
+    private SaveGame saveGame;
 
     JButton voltarMenu = new JButton("Voltar ao início");
     Color fundo = new Color(253,184,39);
     Font fonteT = new Font("", Font.BOLD,35);
     Font fonteTmenor = new Font("", Font.BOLD, 25);
-    public Ganhou(JFrame mainMenu, JPanel painelMenu, Usuario player){
+    public Ganhou(JFrame mainMenu, JPanel painelMenu, Usuario player, SaveGame saveGame){
         this.mainFrame = mainMenu;
         this.painelMenu = painelMenu;
         this.player = player;
+        this.saveGame = saveGame;
+
+        this.mainFrame.setSize(500,430);
+        this.mainFrame.setLocationRelativeTo(null);
+        this.mainFrame.removeWindowListener(this.saveGame);
+        this.mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         setSize(500,430);
         setLayout(new BorderLayout());
         setVisible(true);
+
         painelCima();
         painelMeio();
         painelBaixo();
         painelLadoOeste();
         painelLadoLeste();
+
         if(new File("./src/resources/save/SaveGame.txt").isFile()){
             new File("./src/resources/save/SaveGame.txt").delete();
         }

@@ -1,7 +1,6 @@
 package puzzleN.controller.movimentos;
 
 import puzzleN.model.*;
-import puzzleN.view.Ganhou;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,18 +8,17 @@ import java.awt.event.ActionEvent;
 import java.util.Random;
 
 public class MovJogoImagem extends MovJogo{
-    private int[][] gabarito;
+    private Integer[][] gabarito;
 
     Font fonteBotao = new Font("", Font.BOLD, 50);
     Font botaoBranco = new Font("", Font.BOLD,0);
     Color fundo = new Color(253,184,39);
-    public MovJogoImagem(JButton[][] botao, int[][] gabarito, Usuario player, JLabel movimentos, Cronometro cronometro, JFrame mainFrame, JPanel painelMenu, SaveGame saveGame) {
+    public MovJogoImagem(JButton[][] botao, Integer[][] gabarito, Usuario player, JLabel movimentos, Cronometro cronometro, JFrame mainFrame, JPanel painelMenu, SaveGame saveGame) {
         super(player, botao, movimentos, cronometro, mainFrame, painelMenu, saveGame);
         this.gabarito = gabarito;
     }
     public void actionPerformed(ActionEvent e) {
         Processos processo = new Processos(super.getPlayer().getNivel());
-        Ranking ranking = new Ranking();
         for (int i = 0; i < super.getBotao().length; i++) { //nesses for daqui ele vai olhar cada botao pra saber qual foi apertado
             for (int j = 0; j < super.getBotao()[i].length; j++) {
                 if (e.getSource() == super.getBotao()[i][j]) {
@@ -38,32 +36,15 @@ public class MovJogoImagem extends MovJogo{
                         super.getBotao()[i][j].setText("0");
                         super.getPlayer().setMovimento(super.getPlayer().getMovimento() + 1);
                         super.getMovimentos().setText("Movimentos: " + super.getPlayer().getMovimento()+ " |");
+
                         if (processo.foiResolvido(super.getBotao())) {
-                            super.getCronometro().pararCronometro();
-                            ranking.salvarRanking(super.getPlayer());
-                            super.getMainFrame().setSize(500, 430);
-                            super.getMainFrame().setLocationRelativeTo(null);
-                            super.getMainFrame().removeWindowListener(super.getSaveGame());
-                            super.getMainFrame().setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                            Ganhou telaGanhou = new Ganhou(super.getMainFrame(), super.getPainelMenu(), super.getPlayer());
-                            super.getMainFrame().setContentPane(telaGanhou);
-                            telaGanhou.revalidate();
+                            super.trocarTelaGanhou();
                         }
                     }
                 }
             }
         }
-        for(int i=0; i<super.getBotao().length ;i++) { //caso o botao estiver na posicao certa ele troca de cor
-            for(int j=0; j<super.getBotao()[i].length ; j++) {
-                if(String.valueOf(gabarito[i][j]).equals(super.getBotao()[i][j].getText())) {
-                    if(super.getBotao()[i][j].getText().equals("0")) { //se o botão que esta na posição correta é o branco então não faz nada
-                        continue;
-                    }else {
-                        super.getBotao()[i][j].setForeground(new Color(23,197,0));
-                    }
-                }
-            }
-        }
+        super.casaCorreta(gabarito);
     }
     public void misturarBotoesMaluco(){
         if (super.getPlayer().getPuzzleNMaluco()){

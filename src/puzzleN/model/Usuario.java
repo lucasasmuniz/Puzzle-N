@@ -22,8 +22,8 @@ public class Usuario {
     public void setNome(String nome) throws NomeDeUsuarioException {
         if(nome==null) {
             this.nome = null;
-        }else if(nome.trim().length()<=12 && nome.trim().length()>=3) {
-            this.nome = nome.trim();//replaceAll("\\s", "");
+        }else if(nome.replaceAll("\\s", "").length()<=12 && nome.replaceAll("\\s", "").length()>=3) {
+            this.nome = nome.replaceAll("\\s", "");
         }else {
             throw new NomeDeUsuarioException();
         }
